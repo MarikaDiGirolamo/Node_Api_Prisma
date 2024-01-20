@@ -16,7 +16,7 @@ router.put('/product/:id', body('name').isString(), handleInputErrors, updatePro
 router.put('/product/:id', body('name').isString(), handleInputErrors, deleteProduct);//handleInputErrors è una callback 
 
 
-router.post('/product', body('name').isString(), handleInputErrors, createProduct);
+router.post('/product', body('name').isString(),body('description').optional().isString(), handleInputErrors, createProduct);
 router.post('/products', body('products').isArray(),body('products.*.name').isString(), handleInputErrors, createManyProducts);
 router.delete('/product/:id', handleInputErrors, deleteProduct); 
 

@@ -28,10 +28,22 @@ export const getOneProduct = async (req, res) => {
     res.json({data: product})
 }
 
+export const getProductByName =async (req, res) => {
+    const product = await prisma.product.findFirst({
+        where: {
+            // id: req.params.id,
+            name: req.body.name,
+            belongsToId: req.user.id
+        },
+    })
+    res.json({data: product})
+}
+
 export const createProduct = async (req,res) => {
     const product = await prisma.product.create({
         data: {
             name: req.body.name,
+            description: req.body.description,
             belongsToId: req.user.id,
         }
     })
@@ -59,7 +71,9 @@ export const updateProduct = async (req, res) => {
         }
     },
     data: {
-        name: req.body.name
+        name: req.body.name,
+        description: req.body.description,
+        quantity: req.body.quantity
         }
     })
     res.json({data: updated})
