@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import { handleInputErrors } from './modules/middleware';
-import { createManyProducts, createProduct, deleteProduct, getOneProduct, getProducts, updateProduct } from './handlers/product';
+import { createManyProducts, addProduct, deleteProduct, getOneProduct, getProducts, updateProduct } from './handlers/product';
 
 const router = Router()
 
@@ -16,7 +16,7 @@ router.put('/product/:id', body('name').isString(), handleInputErrors, updatePro
 router.put('/product/:id', body('name').isString(), handleInputErrors, deleteProduct);//handleInputErrors è una callback 
 
 
-router.post('/product', body('name').isString(),body('description').optional().isString(), handleInputErrors, createProduct);
+router.post('/product', body('name').isString(),body('description').optional().isString(), handleInputErrors, addProduct);
 router.post('/products', body('products').isArray(),body('products.*.name').isString(), handleInputErrors, createManyProducts);
 router.delete('/product/:id', handleInputErrors, deleteProduct); 
 

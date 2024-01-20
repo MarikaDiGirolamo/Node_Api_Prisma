@@ -39,15 +39,38 @@ export const getProductByName =async (req, res) => {
     res.json({data: product})
 }
 
-export const createProduct = async (req,res) => {
-    const product = await prisma.product.create({
-        data: {
+export const addProduct = async (req, res) => {
+
+    const existingProduct = await prisma.product.findFirst({
+        where: {
             name: req.body.name,
-            description: req.body.description,
-            belongsToId: req.user.id,
+            belongsToId: req.user.id
         }
     })
-    res.json({data: product});
+
+    if (existingProduct) {
+        const updatedProduct = await prisma.product.update({
+            where: {
+                id: existingProduct.id
+            },
+            data: {
+                quantity: {
+                    increment: 1
+                }
+            },
+        })
+        res.json({ data: updatedProduct })
+    } else {
+        const product = await prisma.product.create({
+            data: {
+                name: req.body.name,
+                description: req.body.description,
+                belongsToId: req.user.id,
+            }
+        })
+        res.json({ data: product })
+    }
+
 }
 
 export const createManyProducts = async (req, res) => {
