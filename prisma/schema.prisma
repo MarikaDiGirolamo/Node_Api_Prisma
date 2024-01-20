@@ -21,10 +21,10 @@ model User {
 model Product {
   id          String   @id @default(uuid())
   name        String   @db.VarChar(255)
-  description String   @db.Text
-  quantity    Int      @db.SmallInt
+  description String?   @db.Text 
+  quantity    Int      @db.SmallInt @default(1)
   createdAt   DateTime @default(now())
-  
+
   belongsToId String
   belongsTo   User     @relation(fields: [belongsToId], references: [id])
 
