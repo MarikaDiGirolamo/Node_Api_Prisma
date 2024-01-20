@@ -36,7 +36,18 @@ export const createProduct = async (req,res) => {
         }
     })
     res.json({data: product});
+}
 
+export const createManyProducts = async (req, res) => {
+    const productsWithId = req.body.products.map((product) => ({
+        ...product,
+        belongsToId: req.user.id
+    }))
+
+    const newProducts = await prisma.product.createMany({
+        data: productsWithId
+    })
+    res.json({data: newProducts})
 }
 
 export const updateProduct = async (req, res) => {

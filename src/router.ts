@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import { handleInputErrors } from './modules/middleware';
-import { createProduct, getOneProduct, getProducts } from './handlers/product';
+import { createManyProducts, createProduct, deleteProduct, getOneProduct, getProducts, updateProduct } from './handlers/product';
 
 const router = Router()
 
@@ -12,11 +12,13 @@ const router = Router()
 
 router.get('/products', getProducts)
 router.get('/product/:id', () => {}) //:id è un parametro del router, possiamo impostare quello che vogliamo
-router.put('/product/:id', body('name').isString(), handleInputErrors, (req, res) => {}) //handleInputErrors è una callback 
+router.put('/product/:id', body('name').isString(), handleInputErrors, updateProduct);//handleInputErrors è una callback 
+router.put('/product/:id', body('name').isString(), handleInputErrors, deleteProduct);//handleInputErrors è una callback 
 
 
 router.post('/product', body('name').isString(), handleInputErrors, createProduct);
-router.delete('/product/:id', () => {}) 
+router.post('/products', body('products').isArray(),body('products.*.name').isString(), handleInputErrors, createManyProducts);
+router.delete('/product/:id', handleInputErrors, deleteProduct); 
 
 /**
  * Update Product Router

@@ -15,16 +15,18 @@ model User {
   createdAt DateTime  @default(now())
   username  String    @unique
   password  String
-  products   Product[]
+  products  Product[]
 }
 
 model Product {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-
-  name        String @db.VarChar(255)
+  id          String   @id @default(uuid())
+  name        String   @db.VarChar(255)
+  description String   @db.Text
+  quantity    Int      @db.SmallInt
+  createdAt   DateTime @default(now())
+  
   belongsToId String
-  belongsTo   User   @relation(fields: [belongsToId], references: [id])
+  belongsTo   User     @relation(fields: [belongsToId], references: [id])
 
   updates Update[]
 
@@ -47,8 +49,8 @@ model Update {
   version   String?
   asset     String?
 
-  productId   String
-  product     Product       @relation(fields: [productId], references: [id])
+  productId    String
+  product      Product       @relation(fields: [productId], references: [id])
   updatePoints UpdatePoint[]
 }
 
