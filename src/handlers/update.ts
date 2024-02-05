@@ -1,5 +1,23 @@
 import prisma from "../db";
 
+
+export const createUpdate = async (req, res) =>{
+
+    const newUpdate = await prisma.update.create({
+        data: {
+            title: req.body.title,
+            body: req.body.body,
+            product: {
+                connect: {
+                    id: req.body.productId
+                }
+            }
+        }
+    })
+    res.json({data: newUpdate})
+}
+
+
 export const getUpdates = async (req, res) => {
     const products = await prisma.product.findMany({
         where: {
@@ -16,6 +34,8 @@ const updates = products.reduce((allUpdates, product) => {
     res.json({data: updates})
 }
 
+
+
 export const getOneUpdate = async (req, res) => {
     const update = await prisma.update.findUnique({
         where: {
@@ -29,6 +49,10 @@ export const getOneUpdate = async (req, res) => {
                 }
             }
     })
+
+    if(update.product.belongsTo.id !== req.user.id){
+        return res.status(403).json({erros : 'Access Forbidden'})
+    }
 
     res.json({data: update})
 }

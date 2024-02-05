@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import { handleInputErrors } from './modules/middleware';
 import { createManyProducts, addProduct, deleteProduct, getOneProduct, getProducts, updateProduct } from './handlers/product';
-import { getUpdates } from './handlers/update';
+import { getOneUpdate, getUpdates } from './handlers/update';
 
 const router = Router()
 
@@ -35,7 +35,8 @@ router.delete('/product/:id', handleInputErrors, deleteProduct);
  */
 
 router.get('/updates', getUpdates)
-router.get('/update/:id', () => {}) //:id è un parametro del router, possiamo impostare quello che vogliamo
+router.get('/update/:id', getOneUpdate)
+ //:id è un parametro del router, possiamo impostare quello che vogliamo
 router.put('/update/:id', 
     body('title').optional(), 
     body('body').optional(), 
@@ -43,6 +44,7 @@ router.put('/update/:id',
     body('version').optional(),  
 () => {
 }) 
+
 router.post('/update/', 
     body('title').exists().isString(), 
     body('body').exists().isString(), 
