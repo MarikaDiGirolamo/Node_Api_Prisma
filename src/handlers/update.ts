@@ -17,6 +17,22 @@ export const createUpdate = async (req, res) =>{
     res.json({data: newUpdate})
 }
 
+export const updateUpdate = async(req, res) =>{
+
+    const original = await prisma.update.update({
+        where: {
+            id: req.params.id
+        },
+        data: {
+            updatedAt: new Date(),
+            title: req.body.title,
+            body: req.body.body,
+            status: req.body.status,
+            version: req.body.version
+        }
+    })
+    res.json({data: updateUpdate})
+}
 
 export const getUpdates = async (req, res) => {
     const products = await prisma.product.findMany({
@@ -55,4 +71,13 @@ export const getOneUpdate = async (req, res) => {
     }
 
     res.json({data: update})
+}
+
+export const deleteUpdate = async (req, res) => {
+    const deleted = await prisma.update.delete({
+        where: {
+            id: req.params.id
+        }
+    })
+    res.json({data: deleted})
 }

@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
 import { handleInputErrors } from './modules/middleware';
 import { createManyProducts, addProduct, deleteProduct, getOneProduct, getProducts, updateProduct } from './handlers/product';
-import { getOneUpdate, getUpdates } from './handlers/update';
+import { createUpdate, deleteUpdate, getOneUpdate, getUpdates, updateUpdate } from './handlers/update';
 
 const router = Router()
 
@@ -37,7 +37,7 @@ router.delete('/product/:id', handleInputErrors, deleteProduct);
 router.get('/updates', getUpdates)
 router.get('/update/:id', getOneUpdate)
  //:id è un parametro del router, possiamo impostare quello che vogliamo
-router.put('/update/:id', 
+router.put('/update/:id', updateUpdate,
     body('title').optional(), 
     body('body').optional(), 
     body('status').isIn(['IN_PROGRESS', 'SHIPPED', 'DEPRECATED']), 
@@ -45,13 +45,13 @@ router.put('/update/:id',
 () => {
 }) 
 
-router.post('/update/', 
+router.post('/update/',createUpdate  ,
     body('title').exists().isString(), 
     body('body').exists().isString(), 
 () => {}
 ) 
 
-router.delete('/update/:id', () => {}) 
+router.delete('/update/:id', deleteUpdate, () => {}) 
 
 /**
  * Update Points
